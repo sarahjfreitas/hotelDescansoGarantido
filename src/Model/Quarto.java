@@ -6,6 +6,16 @@ public class Quarto {
 	private int capacidade;
 	private double valorDiaria;
 	private boolean status;
+	
+	public Quarto() {}
+	
+	public Quarto(int codigo, int numero, int capacidade, double valorDiaria) {
+		this.codigo = codigo;
+		this.numero = numero;
+		this.capacidade = capacidade;
+		this.status = true;
+		this.valorDiaria = valorDiaria;
+	}
 
 	public int getCodigo() {
 		return codigo;

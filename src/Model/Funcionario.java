@@ -6,6 +6,16 @@ public class Funcionario {
 	private String telefone;
 	private String cargo;
 	private double salario;
+	
+	public Funcionario(){}
+	
+	public Funcionario(int codigo, String nome, String telefone, String cargo, double salario){
+		this.codigo = codigo;
+		this.nome = nome;
+		this.telefone = telefone;
+		this.cargo = cargo;
+		this.salario = salario;
+	}
 
 	public int getCodigo() {
 		return codigo;

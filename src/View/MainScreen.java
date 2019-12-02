@@ -6,6 +6,9 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+
+import Controller.MainController;
+
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Composite;
@@ -29,18 +32,20 @@ public class MainScreen {
 	private Text textEstadiaCodigo;
 	private Text textEstadiaEntrada;
 	private Text textEstadiaSaida;
-
-	/**
-	 * Launch the application.
-	 * @param args
-	 */
-	public static void main(String[] args) {
+	
+	private MainController mainController;
+	
+	public static void main(String[] args) {		
 		try {
 			MainScreen window = new MainScreen();
 			window.open();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	MainScreen() {
+		mainController  = new MainController();
 	}
 
 	/**
