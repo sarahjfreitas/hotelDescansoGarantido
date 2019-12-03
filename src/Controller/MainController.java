@@ -1,9 +1,11 @@
 package Controller;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import Model.Cliente;
 import Model.Estadia;
@@ -88,11 +90,28 @@ public class MainController {
 		if(cliente == null) {
 			return new ResponseMessage(false,"Cliente não encontrado.");
 		}
-
-		// TODO: validar datas
-		// TODO: calculas dias de estadia
-		// TODO: buscar quarto vago
-		// TODO: adicionar estadia
+		Date dtEntrada;
+		Date dtSaida;
+		int intervaloDias;
+		try {
+			DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+			dtEntrada = df.parse(dataEntrada);
+			dtSaida = df.parse(dataSaida);
+			intervaloDias = (int) ((dtSaida.getTime() - dtEntrada.getTime() ) / 86400000L);
+		}
+		catch(Exception e) {
+			return new ResponseMessage(false,"Data precisa estar no formato dd/MM/yyyy.");
+		}
+		
+		Quarto quarto = buscarQuartoVago(dtEntrada, dtSaida,quantidadeNum);
+		if(quarto == null) {
+			return new ResponseMessage(false,"Nenhum quarto disponível");			
+		}
+		
+		Estadia estadia = new Estadia(codigoNum,quarto,quantidadeNum,cliente,dtEntrada,dtSaida,intervaloDias);
+		quarto.setStatus(false);
+		quarto.getEstadias().add(estadia);		
+		listaEstadias.add(estadia);
 		
 		return new ResponseMessage(true,"Estadia adicionada");
 	}
@@ -105,6 +124,15 @@ public class MainController {
 		else {
 			return lista.get(0);
 		}
+	}
+	
+	public Quarto buscarQuartoVago(Date dtEntrada, Date dtSaida, int quantidadeHospedes) {
+		for(Quarto quarto : listaQuartos) {
+			if(quarto.isDisponivel(dtEntrada, dtSaida) && quantidadeHospedes <=  quarto.getCapacidade()) {
+				return quarto;
+			}
+		}
+		return null;
 	}
 	
 

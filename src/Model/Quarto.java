@@ -1,10 +1,14 @@
 package Model;
 
+import java.util.ArrayList;
+import java.util.Date;
+
 public class Quarto {
 	private int numero;
 	private int capacidade;
 	private double valorDiaria;
 	private boolean status;
+	private ArrayList<Estadia> estadias;
 	
 	public Quarto() {}
 	
@@ -13,6 +17,19 @@ public class Quarto {
 		this.capacidade = capacidade;
 		this.status = true;
 		this.valorDiaria = valorDiaria;
+		setEstadias(new ArrayList<Estadia>());
+	}
+	
+	public boolean isDisponivel(Date dataEntrada, Date dataSaida) {
+		for (Estadia estadia : getEstadias()) {
+			if( dataEntrada.getTime() >= estadia.getDataEntrada().getTime() && dataEntrada.getTime() <= estadia.getDataSaida().getTime() ) {
+				return false;
+			}
+			if( dataSaida.getTime() >= estadia.getDataEntrada().getTime() && dataSaida.getTime() <= estadia.getDataSaida().getTime() ) {
+				return false;
+			}
+	    }
+		return true;
 	}
 
 	public int getNumero() {
@@ -56,5 +73,12 @@ public class Quarto {
 		}
 	}
 
+	public ArrayList<Estadia> getEstadias() {
+		return estadias;
+	}
+
+	public void setEstadias(ArrayList<Estadia> estadias) {
+		this.estadias = estadias;
+	}
 
 }
