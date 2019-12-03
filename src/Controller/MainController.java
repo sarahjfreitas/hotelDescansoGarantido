@@ -32,8 +32,8 @@ public class MainController {
 		listaFuncionarios.add(f);
 	}
 	
-	public void adicionarQuarto(String codigo, String numero, String capacidade, String valorDiaria) {
-		Quarto q = new Quarto(Integer.parseInt(codigo),Integer.parseInt(numero), Integer.parseInt(capacidade),Double.parseDouble(valorDiaria));
+	public void adicionarQuarto(String numero, String capacidade, String valorDiaria) {
+		Quarto q = new Quarto(Integer.parseInt(numero), Integer.parseInt(capacidade),Double.parseDouble(valorDiaria));
 		listaQuartos.add(q);
 	}
 	

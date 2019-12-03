@@ -1,22 +1,11 @@
 package View;
 
-import java.util.HashMap;
-
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JComboBox;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-
-import com.sun.javafx.collections.MappingChange.Map;
-
-import Controller.MainController;
-import Model.Cliente;
-
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Composite;
@@ -24,6 +13,10 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+
+import Controller.MainController;
+import Model.Cliente;
+import Model.Quarto;
 
 public class MainScreen {
 
@@ -36,7 +29,7 @@ public class MainScreen {
 	private Text textFuncionarioNome;
 	private Text textFuncionarioTelefone;
 	private Text textFuncionarioCargo;
-	private Text text_FuncionarioSalario;
+	private Text textFuncionarioSalario;
 	private Text textQuartoNumero;
 	private Text textQuartoQuantidade;
 	private Text textQuartoValor;
@@ -49,6 +42,7 @@ public class MainScreen {
 	private MainController mainController;
 	
 	private int clienteLastCode;
+	private int funcionarioLastCode;
 	
 	public static void main(String[] args) {		
 		try {
@@ -62,11 +56,9 @@ public class MainScreen {
 	MainScreen() {
 		mainController  = new MainController();
 		clienteLastCode = 1;
+		funcionarioLastCode = 1;
 	}
 
-	/**
-	 * Open the window.
-	 */
 	public void open() {
 		Display display = Display.getDefault();
 		createContents();
@@ -79,7 +71,6 @@ public class MainScreen {
 		}
 	}
 	
-	
 	public void onAdicionarCliente() {
 		String codigo = textClienteCodigo.getText();
 		String endereco = textClienteEndereco.getText();
@@ -91,6 +82,24 @@ public class MainScreen {
 		textClienteCodigo.setText(Integer.toString(clienteLastCode));
 	}
 	
+	public void onAdicionarFuncionario() {
+		String codigo = textFuncionarioCodigo.getText();
+		String nome = textFuncionarioNome.getText();
+		String telefone = textFuncionarioTelefone.getText();
+		String cargo = textFuncionarioCargo.getText();
+		String salario = textFuncionarioSalario.getText();
+		mainController.adicionarFuncionario(codigo, cargo, nome, telefone, salario);
+		funcionarioLastCode++;
+		textFuncionarioCodigo.setText(Integer.toString(funcionarioLastCode));
+	}
+	
+	public void onAdicionarQuarto() {
+		String numero = textQuartoNumero.getText();
+		String capacidade = textQuartoQuantidade.getText();
+		String valorDiaria = textQuartoValor.getText();
+		mainController.adicionarQuarto(numero, capacidade, valorDiaria);
+	}
+	
 	public void atualizarListaClientes() {
 		comboEstadiaCliente.removeAll();
 		for (Cliente cliente : mainController.listaClientes) {
@@ -98,9 +107,13 @@ public class MainScreen {
 	    }
 	}
 	
-	/**
-	 * Create contents of the window.
-	 */
+	public void atualizarListaQuartos() {
+		comboEstadiaQuarto.removeAll();
+		for (Quarto quarto : mainController.listaQuartos) {
+			comboEstadiaQuarto.add(Integer.toString(quarto.getNumero()) );
+	    }
+	}
+	
 	protected void createContents() {
 		shlHotelDescansoGarantido = new Shell();
 		shlHotelDescansoGarantido.setSize(846, 453);
@@ -172,6 +185,7 @@ public class MainScreen {
 		textFuncionarioCodigo = new Text(grpFuncionrio, SWT.BORDER);
 		textFuncionarioCodigo.setEnabled(false);
 		textFuncionarioCodigo.setBounds(63, 19, 46, 21);
+		textFuncionarioCodigo.setText(Integer.toString(funcionarioLastCode));
 		
 		Label label_1 = new Label(grpFuncionrio, SWT.NONE);
 		label_1.setText("Nome:");
@@ -198,10 +212,16 @@ public class MainScreen {
 		lblSalrio.setBounds(386, 46, 41, 15);
 		lblSalrio.setText("Sal\u00E1rio:");
 		
-		text_FuncionarioSalario = new Text(grpFuncionrio, SWT.BORDER);
-		text_FuncionarioSalario.setBounds(433, 46, 171, 21);
+		textFuncionarioSalario = new Text(grpFuncionrio, SWT.BORDER);
+		textFuncionarioSalario.setBounds(433, 46, 171, 21);
 		
 		Button buttonAdicionarFuncionario = new Button(grpFuncionrio, SWT.NONE);
+		buttonAdicionarFuncionario.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				onAdicionarFuncionario();
+			}
+		});
 		buttonAdicionarFuncionario.setText("Adicionar");
 		buttonAdicionarFuncionario.setBounds(694, 47, 75, 25);
 		
@@ -232,6 +252,12 @@ public class MainScreen {
 		textQuartoValor.setBounds(415, 14, 60, 21);
 		
 		Button buttonAdicionarQuarto = new Button(grpQuarto, SWT.NONE);
+		buttonAdicionarQuarto.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				onAdicionarQuarto();
+			}
+		});
 		buttonAdicionarQuarto.setText("Adicionar");
 		buttonAdicionarQuarto.setBounds(697, 30, 75, 25);
 		

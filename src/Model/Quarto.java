@@ -1,7 +1,6 @@
 package Model;
 
 public class Quarto {
-	private int codigo;
 	private int numero;
 	private int capacidade;
 	private double valorDiaria;
@@ -9,20 +8,11 @@ public class Quarto {
 	
 	public Quarto() {}
 	
-	public Quarto(int codigo, int numero, int capacidade, double valorDiaria) {
-		this.codigo = codigo;
+	public Quarto(int numero, int capacidade, double valorDiaria) {
 		this.numero = numero;
 		this.capacidade = capacidade;
 		this.status = true;
 		this.valorDiaria = valorDiaria;
-	}
-
-	public int getCodigo() {
-		return codigo;
-	}
-
-	public void setCodigo(int codigo) {
-		this.codigo = codigo;
 	}
 
 	public int getNumero() {
