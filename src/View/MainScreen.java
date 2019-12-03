@@ -36,7 +36,6 @@ public class MainScreen {
 	private Text textEstadiaCodigo;
 	private Text textEstadiaEntrada;
 	private Text textEstadiaSaida;
-	private Combo comboEstadiaQuarto;
 	private Combo comboEstadiaCliente;
 	
 	private MainController mainController;
@@ -101,18 +100,16 @@ public class MainScreen {
 		String capacidade = textQuartoQuantidade.getText();
 		String valorDiaria = textQuartoValor.getText();
 		mainController.adicionarQuarto(numero, capacidade, valorDiaria);
-		atualizarListaQuartos();
 	}
 	
 	public void onAdicionarEstadia() {
 		String saida = textEstadiaSaida.getText();
 		String entrada = textEstadiaEntrada.getText();
 		String quantidade = textEstadiaQuantidadeHospedes.getText();
-		String quarto = comboEstadiaQuarto.getText();
 		String codigoCliente = comboEstadiaCliente.getText().split(" - ")[0];
 		String codigo = textEstadiaCodigo.getText();
 		
-		mainController.adicionarEstadia(codigoCliente, codigo, quantidade, quarto,entrada,saida);
+		mainController.adicionarEstadia(codigoCliente, codigo, quantidade,entrada,saida);
 		estadiaLastCode++;
 		textEstadiaCodigo.setText(Integer.toString(estadiaLastCode));
 	}
@@ -122,13 +119,6 @@ public class MainScreen {
 		comboEstadiaCliente.removeAll();
 		for (Cliente cliente : mainController.listaClientes) {
 			comboEstadiaCliente.add(Integer.toString(cliente.getCodigo()) + " - " + cliente.getNome() );
-	    }
-	}
-	
-	public void atualizarListaQuartos() {
-		comboEstadiaQuarto.removeAll();
-		for (Quarto quarto : mainController.listaQuartos) {
-			comboEstadiaQuarto.add(Integer.toString(quarto.getNumero()) );
 	    }
 	}
 	
@@ -312,13 +302,6 @@ public class MainScreen {
 		
 		comboEstadiaCliente = new Combo(grpEstadia, SWT.READ_ONLY);
 		comboEstadiaCliente.setBounds(62, 49, 227, 23);
-		
-		Label lblQuarto = new Label(grpEstadia, SWT.NONE);
-		lblQuarto.setBounds(302, 52, 45, 15);
-		lblQuarto.setText("Quarto:");
-		
-		comboEstadiaQuarto = new Combo(grpEstadia, SWT.READ_ONLY);
-		comboEstadiaQuarto.setBounds(348, 49, 117, 23);
 		
 		Button buttonAdicionarEstadia = new Button(grpEstadia, SWT.NONE);
 		buttonAdicionarEstadia.addSelectionListener(new SelectionAdapter() {
