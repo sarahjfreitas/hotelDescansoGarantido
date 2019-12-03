@@ -1,5 +1,10 @@
 package View;
 
+import java.util.HashMap;
+
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -7,12 +12,18 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
+import com.sun.javafx.collections.MappingChange.Map;
+
 import Controller.MainController;
+import Model.Cliente;
 
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 
 public class MainScreen {
 
@@ -32,8 +43,12 @@ public class MainScreen {
 	private Text textEstadiaCodigo;
 	private Text textEstadiaEntrada;
 	private Text textEstadiaSaida;
+	private Combo comboEstadiaQuarto;
+	private Combo comboEstadiaCliente;
 	
 	private MainController mainController;
+	
+	private int clienteLastCode;
 	
 	public static void main(String[] args) {		
 		try {
@@ -46,6 +61,7 @@ public class MainScreen {
 	
 	MainScreen() {
 		mainController  = new MainController();
+		clienteLastCode = 1;
 	}
 
 	/**
@@ -62,7 +78,26 @@ public class MainScreen {
 			}
 		}
 	}
-
+	
+	
+	public void onAdicionarCliente() {
+		String codigo = textClienteCodigo.getText();
+		String endereco = textClienteEndereco.getText();
+		String nome = textClienteNome.getText();
+		String telefone = textClienteTelefone.getText();
+		mainController.adicionarCliente(codigo, endereco, nome, telefone);
+		atualizarListaClientes();
+		clienteLastCode++;
+		textClienteCodigo.setText(Integer.toString(clienteLastCode));
+	}
+	
+	public void atualizarListaClientes() {
+		comboEstadiaCliente.removeAll();
+		for (Cliente cliente : mainController.listaClientes) {
+			comboEstadiaCliente.add(Integer.toString(cliente.getCodigo()) + " - " + cliente.getNome() );
+	    }
+	}
+	
 	/**
 	 * Create contents of the window.
 	 */
@@ -92,6 +127,7 @@ public class MainScreen {
 		textClienteCodigo = new Text(grpCliente, SWT.BORDER);
 		textClienteCodigo.setEnabled(false);
 		textClienteCodigo.setBounds(67, 19, 46, 21);
+		textClienteCodigo.setText(Integer.toString(clienteLastCode));
 		
 		Label lblNome = new Label(grpCliente, SWT.NONE);
 		lblNome.setBounds(119, 22, 39, 15);
@@ -105,7 +141,7 @@ public class MainScreen {
 		lblEndereo.setText("Endere\u00E7o:");
 		
 		textClienteEndereco = new Text(grpCliente, SWT.BORDER);
-		textClienteEndereco.setBounds(67, 50, 702, 21);
+		textClienteEndereco.setBounds(67, 50, 466, 21);
 		
 		Label lblTelefone = new Label(grpCliente, SWT.NONE);
 		lblTelefone.setBounds(540, 22, 55, 15);
@@ -113,6 +149,16 @@ public class MainScreen {
 		
 		textClienteTelefone = new Text(grpCliente, SWT.BORDER);
 		textClienteTelefone.setBounds(598, 19, 171, 21);
+		
+		Button btnAdicionarCliente = new Button(grpCliente, SWT.NONE);
+		btnAdicionarCliente.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				onAdicionarCliente();
+			}
+		});
+		btnAdicionarCliente.setBounds(694, 62, 75, 25);
+		btnAdicionarCliente.setText("Adicionar");
 		
 		Group grpFuncionrio = new Group(composite, SWT.NONE);
 		grpFuncionrio.setLocation(10, 103);
@@ -155,6 +201,10 @@ public class MainScreen {
 		text_FuncionarioSalario = new Text(grpFuncionrio, SWT.BORDER);
 		text_FuncionarioSalario.setBounds(433, 46, 171, 21);
 		
+		Button buttonAdicionarFuncionario = new Button(grpFuncionrio, SWT.NONE);
+		buttonAdicionarFuncionario.setText("Adicionar");
+		buttonAdicionarFuncionario.setBounds(694, 47, 75, 25);
+		
 		Group grpQuarto = new Group(composite, SWT.NONE);
 		grpQuarto.setLocation(10, 191);
 		grpQuarto.setSize(782, 65);
@@ -180,6 +230,10 @@ public class MainScreen {
 		
 		textQuartoValor = new Text(grpQuarto, SWT.BORDER);
 		textQuartoValor.setBounds(415, 14, 60, 21);
+		
+		Button buttonAdicionarQuarto = new Button(grpQuarto, SWT.NONE);
+		buttonAdicionarQuarto.setText("Adicionar");
+		buttonAdicionarQuarto.setBounds(697, 30, 75, 25);
 		
 		Group grpEstadia = new Group(composite, SWT.NONE);
 		grpEstadia.setText("Estadia");
@@ -211,15 +265,19 @@ public class MainScreen {
 		lblNewLabel_1.setBounds(10, 52, 50, 15);
 		lblNewLabel_1.setText("Cliente:");
 		
-		Combo comboEstadiaCliente = new Combo(grpEstadia, SWT.NONE);
+		comboEstadiaCliente = new Combo(grpEstadia, SWT.READ_ONLY);
 		comboEstadiaCliente.setBounds(62, 49, 227, 23);
 		
 		Label lblQuarto = new Label(grpEstadia, SWT.NONE);
 		lblQuarto.setBounds(302, 52, 45, 15);
 		lblQuarto.setText("Quarto:");
 		
-		Combo comboEstadiaQuarto = new Combo(grpEstadia, SWT.NONE);
+		comboEstadiaQuarto = new Combo(grpEstadia, SWT.READ_ONLY);
 		comboEstadiaQuarto.setBounds(348, 49, 117, 23);
+		
+		Button buttonAdicionarEstadia = new Button(grpEstadia, SWT.NONE);
+		buttonAdicionarEstadia.setText("Adicionar");
+		buttonAdicionarEstadia.setBounds(697, 47, 75, 25);
 		
 		TabItem tbtmPesquisar = new TabItem(tabFolder, SWT.NONE);
 		tbtmPesquisar.setText("Pesquisar");

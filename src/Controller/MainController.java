@@ -6,13 +6,12 @@ import Model.Cliente;
 import Model.Estadia;
 import Model.Funcionario;
 import Model.Quarto;
-import View.MainScreen;
 
 public class MainController {
-	private ArrayList<Cliente> listaClientes;
-	private ArrayList<Estadia> listaEstadias;
-	private ArrayList<Funcionario> listaFuncionarios;
-	private ArrayList<Quarto> listaQuartos;
+	public ArrayList<Cliente> listaClientes;
+	public ArrayList<Estadia> listaEstadias;
+	public ArrayList<Funcionario> listaFuncionarios;
+	public ArrayList<Quarto> listaQuartos;
 	
 	public MainController() {
 		listaClientes = new ArrayList<Cliente>();
