@@ -43,6 +43,8 @@ public class MainScreen {
 	
 	private int clienteLastCode;
 	private int funcionarioLastCode;
+	private int estadiaLastCode;
+	private Text textEstadiaQuantidadeHospedes;
 	
 	public static void main(String[] args) {		
 		try {
@@ -57,6 +59,7 @@ public class MainScreen {
 		mainController  = new MainController();
 		clienteLastCode = 1;
 		funcionarioLastCode = 1;
+		estadiaLastCode = 1;
 	}
 
 	public void open() {
@@ -98,7 +101,22 @@ public class MainScreen {
 		String capacidade = textQuartoQuantidade.getText();
 		String valorDiaria = textQuartoValor.getText();
 		mainController.adicionarQuarto(numero, capacidade, valorDiaria);
+		atualizarListaQuartos();
 	}
+	
+	public void onAdicionarEstadia() {
+		String saida = textEstadiaSaida.getText();
+		String entrada = textEstadiaEntrada.getText();
+		String quantidade = textEstadiaQuantidadeHospedes.getText();
+		String quarto = comboEstadiaQuarto.getText();
+		String codigoCliente = comboEstadiaCliente.getText().split(" - ")[0];
+		String codigo = textEstadiaCodigo.getText();
+		
+		mainController.adicionarEstadia(codigoCliente, codigo, quantidade, quarto,entrada,saida);
+		estadiaLastCode++;
+		textEstadiaCodigo.setText(Integer.toString(estadiaLastCode));
+	}
+		
 	
 	public void atualizarListaClientes() {
 		comboEstadiaCliente.removeAll();
@@ -272,6 +290,7 @@ public class MainScreen {
 		textEstadiaCodigo = new Text(grpEstadia, SWT.BORDER);
 		textEstadiaCodigo.setEnabled(false);
 		textEstadiaCodigo.setBounds(62, 19, 46, 21);
+		textEstadiaCodigo.setText(Integer.toString(estadiaLastCode));
 		
 		Label lblNewLabel = new Label(grpEstadia, SWT.NONE);
 		lblNewLabel.setBounds(114, 22, 90, 15);
@@ -281,7 +300,7 @@ public class MainScreen {
 		textEstadiaEntrada.setBounds(206, 19, 83, 21);
 		
 		Label lblDataDeSada = new Label(grpEstadia, SWT.NONE);
-		lblDataDeSada.setBounds(302, 22, 83, 15);
+		lblDataDeSada.setBounds(302, 22, 76, 15);
 		lblDataDeSada.setText("Data de Sa\u00EDda:");
 		
 		textEstadiaSaida = new Text(grpEstadia, SWT.BORDER);
@@ -302,8 +321,21 @@ public class MainScreen {
 		comboEstadiaQuarto.setBounds(348, 49, 117, 23);
 		
 		Button buttonAdicionarEstadia = new Button(grpEstadia, SWT.NONE);
+		buttonAdicionarEstadia.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				onAdicionarEstadia();
+			}
+		});
 		buttonAdicionarEstadia.setText("Adicionar");
 		buttonAdicionarEstadia.setBounds(697, 47, 75, 25);
+		
+		Label label_4 = new Label(grpEstadia, SWT.NONE);
+		label_4.setText("Quantidade de Hospedes:");
+		label_4.setBounds(476, 22, 140, 15);
+		
+		textEstadiaQuantidadeHospedes = new Text(grpEstadia, SWT.BORDER);
+		textEstadiaQuantidadeHospedes.setBounds(622, 19, 60, 21);
 		
 		TabItem tbtmPesquisar = new TabItem(tabFolder, SWT.NONE);
 		tbtmPesquisar.setText("Pesquisar");

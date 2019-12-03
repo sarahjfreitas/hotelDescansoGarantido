@@ -37,6 +37,10 @@ public class MainController {
 		listaQuartos.add(q);
 	}
 	
+	public void adicionarEstadia(String codigoCliente, String codigo, String quantidade, String numeroQuarto, String dataEntrada, String dataSaida) {
+		
+	}
+	
 	
 
 }
