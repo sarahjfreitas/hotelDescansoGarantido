@@ -21,6 +21,10 @@ public class Estadia {
 		this.quantidadeDiarias = quantidadeDiarias;
 	}
 	
+	public double getValorTotal() {
+		return (quarto.getValorDiaria() * quantidadeDiarias);
+	}
+	
 	public int getCodigo() {
 		return codigo;
 	}

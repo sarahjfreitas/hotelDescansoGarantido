@@ -116,6 +116,16 @@ public class MainController {
 		return new ResponseMessage(true,"Estadia adicionada");
 	}
 	
+	public ResponseMessage finalizarEstadia(int codigoEstadia) {
+		Estadia estadia = buscarEstadia(codigoEstadia);
+		if(estadia == null) {
+			return new ResponseMessage(false,"Estadia não encontrada");
+		}
+		estadia.getQuarto().setStatus(true);
+		double valorAPagar = estadia.getValorTotal();
+		return new ResponseMessage(true,Double.toString(valorAPagar));
+	}
+	
 	public Cliente buscarCliente(int codigo) {
 		List<Cliente> lista = listaClientes.stream().filter(c -> c.getCodigo() == codigo).collect(Collectors.toList());
 		if(lista.isEmpty()) {
@@ -133,6 +143,16 @@ public class MainController {
 			}
 		}
 		return null;
+	}
+	
+	public Estadia buscarEstadia(int codigo) {
+		List<Estadia> lista = listaEstadias.stream().filter(c -> c.getCodigo() == codigo).collect(Collectors.toList());
+		if(lista.isEmpty()) {
+			return null;
+		}
+		else {
+			return lista.get(0);
+		}
 	}
 	
 
