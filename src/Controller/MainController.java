@@ -22,10 +22,10 @@ public class MainController {
     public ArrayList<Quarto> listaQuartos;
 
     public MainController() {
-        listaClientes = new ArrayList<Cliente>();
-        listaEstadias = new ArrayList<Estadia>();
-        listaFuncionarios = new ArrayList<Funcionario>();
-        listaQuartos = new ArrayList<Quarto>();
+        listaClientes = new ArrayList<>();
+        listaEstadias = new ArrayList<>();
+        listaFuncionarios = new ArrayList<>();
+        listaQuartos = new ArrayList<>();
     }
 
     public ResponseMessage adicionarCliente(String codigo, String endereco, String nome, String telefone) {
@@ -37,7 +37,7 @@ public class MainController {
             return new ResponseMessage(false, "Código deve único");
         }
 
-		//TODO: validar outros campos se sobrar tempo
+        //TODO: validar outros campos se sobrar tempo
         Cliente c = new Cliente(codigoNum, nome, endereco, telefone);
         listaClientes.add(c);
         return new ResponseMessage(true, "Cliente adicionado");
@@ -55,7 +55,7 @@ public class MainController {
             return new ResponseMessage(false, "Salário deve ser um número decimal ou inteiro.");
         }
 
-		//TODO: validar outros campos se sobrar tempo
+        //TODO: validar outros campos se sobrar tempo
         Funcionario f = new Funcionario(Integer.parseInt(codigo), nome, telefone, cargo, Double.parseDouble(salario));
         listaFuncionarios.add(f);
         return new ResponseMessage(true, "Funcionário adicionado");
