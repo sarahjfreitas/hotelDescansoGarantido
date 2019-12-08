@@ -14,13 +14,35 @@ import Model.Quarto;
 import Util.ResponseMessage;
 import Util.Utilities;
 
+/**
+ * controller principal do projeto
+ * @author sarah.freitas
+ */
 public class MainController {
 
+    /**
+     * lista de clientes
+     */
     public ArrayList<Cliente> listaClientes;
+
+    /**
+     * lista de estadias
+     */
     public ArrayList<Estadia> listaEstadias;
+
+    /**
+     * lista de funcionarios
+     */
     public ArrayList<Funcionario> listaFuncionarios;
+
+    /**
+     * lista de quartos
+     */
     public ArrayList<Quarto> listaQuartos;
 
+    /**
+     * contrutor padrao
+     */
     public MainController() {
         listaClientes = new ArrayList<>();
         listaEstadias = new ArrayList<>();
@@ -28,6 +50,14 @@ public class MainController {
         listaQuartos = new ArrayList<>();
     }
 
+    /**
+     * metodo que adiciona um novo cliente
+     * @param codigo String codigo do cliente
+     * @param endereco String endereco do cliente
+     * @param nome String nome do cliente
+     * @param telefone String telefone do cliente
+     * @return ResponseMessage status true ou false dependendo do sucesso e mensagem com detalhes
+     */
     public ResponseMessage adicionarCliente(String codigo, String endereco, String nome, String telefone) {
         if (!Utilities.isInteger(codigo)) {
             return new ResponseMessage(false, "Código deve ser um número inteiro");
@@ -43,6 +73,15 @@ public class MainController {
         return new ResponseMessage(true, "Cliente adicionado");
     }
 
+    /**
+     * metodo que adiciona um novo funcionario
+     * @param codigo Sring codigo do funcinario
+     * @param cargo String cargo do funcinario
+     * @param nome String nome do funcinario
+     * @param telefone String telefone do funcinario
+     * @param salario String salario do funcinario
+     * @return ResponseMessage status true ou false dependendo do sucesso e mensagem com detalhes
+     */
     public ResponseMessage adicionarFuncionario(String codigo, String cargo, String nome, String telefone, String salario) {
         if (!Utilities.isInteger(codigo)) {
             return new ResponseMessage(false, "Código deve ser um número inteiro");
@@ -61,11 +100,26 @@ public class MainController {
         return new ResponseMessage(true, "Funcionário adicionado");
     }
 
+    /**
+     * metodo que adiciona um novo quarto
+     * @param numero String numero do quarto
+     * @param capacidade Sring capacidade maxima de hospedes
+     * @param valorDiaria String valor da diaria
+     */
     public void adicionarQuarto(String numero, String capacidade, String valorDiaria) {
         Quarto q = new Quarto(Integer.parseInt(numero), Integer.parseInt(capacidade), Double.parseDouble(valorDiaria));
         listaQuartos.add(q);
     }
 
+    /**
+     * metodo que adiciona uma nova estadia
+     * @param codigoCliente String codigo do cliente
+     * @param codigo String codigo da estadia
+     * @param quantidade String quantidade de hospedes
+     * @param dataEntrada String data de entrada no formato dd/MM/yyyy
+     * @param dataSaida String data de saida no formato dd/MM/yyyy
+     * @return ResponseMessage status true ou false dependendo do sucesso e mensagem com detalhes
+     */ 
     public ResponseMessage adicionarEstadia(String codigoCliente, String codigo, String quantidade, String dataEntrada, String dataSaida) {
         if (!Utilities.isInteger(codigoCliente)) {
             return new ResponseMessage(false, "Código deve ser um número inteiro");
@@ -112,6 +166,11 @@ public class MainController {
         return new ResponseMessage(true, "Estadia adicionada");
     }
 
+    /**
+     * metodo que encerra uma estadia
+     * @param codigoEstadia int codigo da estadia
+     * @return ResponseMessage status true ou false dependendo do sucesso e mensagem com detalhes
+     */
     public ResponseMessage finalizarEstadia(int codigoEstadia) {
         Estadia estadia = buscarEstadia(codigoEstadia);
         if (estadia == null) {
@@ -122,6 +181,11 @@ public class MainController {
         return new ResponseMessage(true, Double.toString(valorAPagar));
     }
 
+    /**
+     * metodo que busca um cliente pelo codigo
+     * @param codigo int codigo do cliente
+     * @return Cliente encontrado ou null se nao for encontrado
+     */
     public Cliente buscarCliente(int codigo) {
         List<Cliente> lista = listaClientes.stream().filter(c -> c.getCodigo() == codigo).collect(Collectors.toList());
         if (lista.isEmpty()) {
@@ -131,6 +195,11 @@ public class MainController {
         }
     }
     
+    /**
+     * metodo que busca um cliente pelo nome
+     * @param nome String nome do Cliente
+     * @return Cliente encontrado ou null se nao for encontrado
+     */
     public Cliente buscarCliente(String nome) {
         List<Cliente> lista = listaClientes.stream().filter(c -> c.getNome().equals(nome)).collect(Collectors.toList());
         if (lista.isEmpty()) {
@@ -140,6 +209,11 @@ public class MainController {
         }
     }
     
+    /**
+     * metodo que busca as estadias de um cliente
+     * @param codigo int codigo do cliente
+     * @return ArrayList de Estadia contendo as estadias do cliente
+     */
     public ArrayList<Estadia> buscarEstadiasDoCliente(int codigo){
         Cliente c = buscarCliente(codigo);
         if(c == null){
@@ -148,6 +222,13 @@ public class MainController {
         return c.getEstadias();
     }
 
+    /**
+     * metodo que busca um quarto vago
+     * @param dtEntrada Date data desejada de entrada
+     * @param dtSaida Date data desejada de saida
+     * @param quantidadeHospedes int quantidade de hospedes
+     * @return retorna o Quarto caso existe algum disponivel, caso contrario retorna null
+     */
     public Quarto buscarQuartoVago(Date dtEntrada, Date dtSaida, int quantidadeHospedes) {
         for (Quarto quarto : listaQuartos) {
             if (quarto.isDisponivel(dtEntrada, dtSaida) && quantidadeHospedes <= quarto.getCapacidade()) {
@@ -157,6 +238,11 @@ public class MainController {
         return null;
     }
 
+    /**
+     * metodo que busca uma estadia pelo codigo
+     * @param codigo int codigo da estadia
+     * @return Estadia encontrada ou null caso nao encontre
+     */
     public Estadia buscarEstadia(int codigo) {
         List<Estadia> lista = listaEstadias.stream().filter(c -> c.getCodigo() == codigo).collect(Collectors.toList());
         if (lista.isEmpty()) {
@@ -166,6 +252,11 @@ public class MainController {
         }
     }
     
+    /**
+     * metodo que busca a quantidade de pontos de fidelidade de um cliente
+     * @param codigo int codigo do cliente
+     * @return int quantidade de pontos de fidelidade do cliente ou 0 caso não encontre o cliente
+     */
     public int buscarQuantidadePontosFidelidadeCliente(int codigo){
         Cliente c = buscarCliente(codigo);
         if(c == null){
@@ -173,7 +264,4 @@ public class MainController {
         }
         return c.getPontosFidelidade();
     }
-    
-    
-
 }
