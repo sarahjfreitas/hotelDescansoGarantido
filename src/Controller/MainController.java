@@ -129,6 +129,15 @@ public class MainController {
             return lista.get(0);
         }
     }
+    
+    public Cliente buscarCliente(String nome) {
+        List<Cliente> lista = listaClientes.stream().filter(c -> c.getNome().equals(nome)).collect(Collectors.toList());
+        if (lista.isEmpty()) {
+            return null;
+        } else {
+            return lista.get(0);
+        }
+    }
 
     public Quarto buscarQuartoVago(Date dtEntrada, Date dtSaida, int quantidadeHospedes) {
         for (Quarto quarto : listaQuartos) {
