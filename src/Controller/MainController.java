@@ -132,7 +132,7 @@ public class MainController {
         int codigoNum = Integer.parseInt(codigo);
 
         if (!Utilities.isInteger(quantidade)) {
-            return new ResponseMessage(false, "Quantidade deve ser um n�mero inteiro");
+            return new ResponseMessage(false, "Quantidade deve ser um número inteiro");
         }
         int quantidadeNum = Integer.parseInt(quantidade);
 
