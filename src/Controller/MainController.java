@@ -142,7 +142,7 @@ public class MainController {
     
     public ArrayList<Estadia> buscarEstadiasDoCliente(int codigo){
         Cliente c = buscarCliente(codigo);
-        if(c != null){
+        if(c == null){
             return null;
         }
         return c.getEstadias();
