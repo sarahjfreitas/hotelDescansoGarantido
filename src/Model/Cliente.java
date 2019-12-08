@@ -1,5 +1,7 @@
 package Model;
 
+import java.util.ArrayList;
+
 /**
  * Classe para objetos do tipo Cliente
  *
@@ -11,6 +13,7 @@ public class Cliente {
     private String nome;
     private String endereco;
     private String telefone;
+    private ArrayList<Estadia> estadias;
 
     /**
      * Contrutor para criação de cliente vazio
@@ -18,19 +21,20 @@ public class Cliente {
     public Cliente() {
     }
 
-    ;
-	
-	/** Contrutor para criação de cliente com os dados 
-	* @param codigo int - codigo do cliente
-	* @param nome String - nome do cliente
-	* @param endereco String - endereço do cliente
-	* @param telefone String - telefone do cliente
-	*/
-	public Cliente(int codigo, String nome, String endereco, String telefone) {
+    /**
+     * Contrutor para criação de cliente com os dados
+     *
+     * @param codigo int - codigo do cliente
+     * @param nome String - nome do cliente
+     * @param endereco String - endereço do cliente
+     * @param telefone String - telefone do cliente
+     */
+    public Cliente(int codigo, String nome, String endereco, String telefone) {
         this.codigo = codigo;
         this.nome = nome;
         this.endereco = endereco;
         this.telefone = telefone;
+        this.estadias = new ArrayList<>();
     }
 
     /**
@@ -104,5 +108,23 @@ public class Cliente {
     public void setTelefone(String telefone) {
         this.telefone = telefone;
     }
+    
+    /**
+     * Método para retornar a lista de estadias
+     *
+     * @return estadias ArrayList de Estadia
+     */
+    public ArrayList<Estadia> getEstadias(){
+        return this.estadias;
+    }
+    
+    /**
+     * Método para definir a lista de estadias
+     *
+     * @param estadias ArrayList de Estadia
+     */
+    public void setEstadias(ArrayList<Estadia> estadias){
+        this.estadias = estadias;
+    }   
 
 }

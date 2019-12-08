@@ -106,6 +106,7 @@ public class MainController {
         Estadia estadia = new Estadia(codigoNum, quarto, quantidadeNum, cliente, dtEntrada, dtSaida, intervaloDias);
         quarto.setStatus(false);
         quarto.getEstadias().add(estadia);
+        cliente.getEstadias().add(estadia);
         listaEstadias.add(estadia);
 
         return new ResponseMessage(true, "Estadia adicionada");
@@ -137,6 +138,14 @@ public class MainController {
         } else {
             return lista.get(0);
         }
+    }
+    
+    public ArrayList<Estadia> buscarEstadiasDoCliente(int codigo){
+        Cliente c = buscarCliente(codigo);
+        if(c != null){
+            return null;
+        }
+        return c.getEstadias();
     }
 
     public Quarto buscarQuartoVago(Date dtEntrada, Date dtSaida, int quantidadeHospedes) {
