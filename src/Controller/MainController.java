@@ -165,5 +165,15 @@ public class MainController {
             return lista.get(0);
         }
     }
+    
+    public int buscarQuantidadePontosFidelidadeCliente(int codigo){
+        Cliente c = buscarCliente(codigo);
+        if(c == null){
+            return 0;
+        }
+        return c.getPontosFidelidade();
+    }
+    
+    
 
 }

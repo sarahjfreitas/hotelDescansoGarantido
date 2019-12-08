@@ -125,6 +125,15 @@ public class Cliente {
      */
     public void setEstadias(ArrayList<Estadia> estadias){
         this.estadias = estadias;
-    }   
+    }
+    
+    /**
+     * Método que calcula a quantidade de pontos de fidelidade
+     *
+     * @return 
+     */
+    public int getPontosFidelidade(){
+        return this.estadias.size() * 10;
+    }
 
 }
